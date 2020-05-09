@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>LiveChat</title>
+	<style type="text/css">
+		body{
+			margin: 0;
+			padding: 0;
+			display: flex;
+			justify-content: center;
+			box-sizing: border-box;
+		}
+
+		button{
+			height: 35px;
+			margin: 0;
+			border: none;
+			border-radius: 5px;
+		}
+
+		button:hover{
+			background-color: green;
+			cursor: pointer;
+		}
+
+		.cadre{
+			width: 80vw;
+			height: 100vh;
+			background-color: rgb(77, 77, 77);
+
+		}
+
+		.typing{
+			position: absolute;
+			bottom: 0;
+			right : 33vw;
+			text-align: center;
+		}
+
+		ul, li {
+			text-decoration: none;
+		}
+
+	</style>
+</head>
+
+<body>
+	
+	<script src="/socket.io/socket.io.js"></script>
+
+	<script defer>
+		
+		var socket = io();
+
+		var send = function() {
+			var text = document.getElementById('input').value
+			socket.emit('chat message', text)
+		}
+
+		var receive = function(msg) {
+			console.log('receive')
+			var li = document.createElement('li')
+			li.innerText = msg
+			document.getElementById("flow").appendChild(li)
+		}
+
+		socket.on('chat message', receive)
+
+	</script>
+
+	<div class="cadre">
+
+		<ul id="flow"></ul>
+
+		<div class="typing">
+			<input class="input" type="text" id="input"><button class="button" id="button" onclick="send()">Envoyer</button>
+		</div>
+	</div>
+</body>
+
+</html>
